@@ -30,15 +30,11 @@ COPY --from=builder --chown=nextjs:nodejs /app/.next/standalone ./
 COPY --from=builder --chown=nextjs:nodejs /app/.next/static ./.next/static
 COPY --from=builder /app/drizzle ./drizzle
 COPY --from=builder /app/scripts ./scripts
-COPY --from=builder /app/src/db ./src/db
-COPY --from=builder /app/node_modules/drizzle-orm ./node_modules/drizzle-orm
 COPY --from=builder /app/node_modules/postgres ./node_modules/postgres
-COPY --from=builder /app/node_modules/tsx ./node_modules/tsx
-COPY --from=builder /app/node_modules/.bin/tsx ./node_modules/.bin/tsx
-COPY scripts/docker-entrypoint.sh /app/docker-entrypoint.sh
-RUN chmod +x /app/docker-entrypoint.sh && chown nextjs:nodejs /app/docker-entrypoint.sh
+RUN chmod +x /app/scripts/docker-entrypoint.sh /app/scripts/migrate.mjs 2>/dev/null || true
+RUN chown -R nextjs:nodejs /app/scripts
 USER nextjs
 EXPOSE 3000
 ENV PORT=3000
 ENV HOSTNAME="0.0.0.0"
-CMD ["/app/docker-entrypoint.sh"]
+CMD ["/app/scripts/docker-entrypoint.sh"]

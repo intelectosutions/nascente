@@ -2,8 +2,9 @@
 set -e
 
 echo "→ Aplicando migrations…"
-./node_modules/.bin/tsx src/db/migrate.ts || {
-  echo "⚠ Falha na migration. Iniciando mesmo assim (talvez já estejam aplicadas)."
+node scripts/migrate.mjs || {
+  echo "⚠ Falha na migration — abortando." >&2
+  exit 1
 }
 
 echo "→ Iniciando Next.js…"
