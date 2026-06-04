@@ -1,0 +1,43 @@
+{
+  "name": "nascente",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "predev": "sh scripts/gen-version.sh",
+    "prebuild": "sh scripts/gen-version.sh",
+    "dev": "next dev --turbopack",
+    "build": "next build",
+    "start": "next start",
+    "lint": "next lint",
+    "db:generate": "drizzle-kit generate",
+    "db:migrate": "tsx src/db/migrate.ts",
+    "db:studio": "drizzle-kit studio",
+    "version-check": "sh scripts/version-check.sh"
+  },
+  "dependencies": {
+    "next": "15.5.0",
+    "react": "19.0.0",
+    "react-dom": "19.0.0",
+    "drizzle-orm": "^0.36.4",
+    "postgres": "^3.4.5",
+    "xlsx": "https://cdn.sheetjs.com/xlsx-0.20.3/xlsx-0.20.3.tgz",
+    "date-fns": "^4.1.0",
+    "clsx": "^2.1.1",
+    "tailwind-merge": "^2.5.5",
+    "lucide-react": "^0.460.0",
+    "zod": "^3.23.8"
+  },
+  "devDependencies": {
+    "@types/node": "^22.10.1",
+    "@types/react": "^19.0.1",
+    "@types/react-dom": "^19.0.1",
+    "typescript": "^5.7.2",
+    "tailwindcss": "^3.4.16",
+    "postcss": "^8.4.49",
+    "autoprefixer": "^10.4.20",
+    "drizzle-kit": "^0.28.1",
+    "tsx": "^4.19.2",
+    "eslint": "^9.16.0",
+    "eslint-config-next": "15.5.0"
+  }
+}
