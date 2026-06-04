@@ -1,34 +1,50 @@
-const CACHE = "nascente-v1";
-const ASSETS = ["/", "/animais", "/manifest.webmanifest"];
+const CACHE = "nascente-v3";
 
-self.addEventListener("install", (e) => {
-  e.waitUntil(caches.open(CACHE).then((c) => c.addAll(ASSETS)).catch(() => {}));
+self.addEventListener("install", () => {
   self.skipWaiting();
 });
 
 self.addEventListener("activate", (e) => {
   e.waitUntil(
-    caches.keys().then((keys) => Promise.all(keys.filter((k) => k !== CACHE).map((k) => caches.delete(k))))
+    caches
+      .keys()
+      .then((keys) => Promise.all(keys.map((k) => caches.delete(k))))
+      .then(() => self.clients.claim())
   );
-  self.clients.claim();
 });
 
 self.addEventListener("fetch", (e) => {
-  const url = new URL(e.request.url);
-  if (e.request.method !== "GET") return;
-  if (url.pathname.startsWith("/api/") || url.pathname.startsWith("/painel")) {
-    e.respondWith(fetch(e.request).catch(() => caches.match(e.request).then((r) => r || new Response("Offline", { status: 503 }))));
+  const req = e.request;
+  if (req.method !== "GET") return;
+  const url = new URL(req.url);
+
+  // Assets estáticos: cache-first (imutáveis, com hash no nome)
+  const isStatic =
+    url.pathname.startsWith("/_next/static") ||
+    /\.(png|svg|ico|webmanifest|woff2?|css|js)$/.test(url.pathname);
+
+  if (isStatic) {
+    e.respondWith(
+      caches.open(CACHE).then((c) =>
+        c.match(req).then((hit) => hit || fetch(req).then((r) => {
+          if (r.ok) c.put(req, r.clone());
+          return r;
+        }))
+      )
+    );
     return;
   }
+
+  // Páginas e dados: SEMPRE rede (conteúdo sempre fresco); cache só como fallback offline
   e.respondWith(
-    fetch(e.request)
-      .then((resp) => {
-        if (resp.ok) {
-          const cloned = resp.clone();
-          caches.open(CACHE).then((c) => c.put(e.request, cloned)).catch(() => {});
+    fetch(req)
+      .then((r) => {
+        if (r.ok && req.mode === "navigate") {
+          const clone = r.clone();
+          caches.open(CACHE).then((c) => c.put(req, clone));
         }
-        return resp;
+        return r;
       })
-      .catch(() => caches.match(e.request).then((r) => r || new Response("Offline", { status: 503 })))
+      .catch(() => caches.match(req).then((hit) => hit || new Response("Offline", { status: 503 })))
   );
 });

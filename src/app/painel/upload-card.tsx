@@ -3,7 +3,7 @@
 import { useState, useTransition } from "react";
 import { uploadPlanilha, type UploadResult } from "./actions";
 
-export function UploadCard() {
+export function UploadCard({ slug }: { slug: string }) {
   const [file, setFile] = useState<File | null>(null);
   const [result, setResult] = useState<UploadResult | null>(null);
   const [pending, startTransition] = useTransition();
@@ -24,6 +24,7 @@ export function UploadCard() {
     if (!file) return;
     const fd = new FormData();
     fd.set("planilha", file);
+    fd.set("slug", slug);
     startTransition(async () => {
       const r = await uploadPlanilha(fd);
       setResult(r);
@@ -34,6 +35,7 @@ export function UploadCard() {
     if (!file) return;
     const fd = new FormData();
     fd.set("planilha", file);
+    fd.set("slug", slug);
     fd.set("apply", "1");
     startTransition(async () => {
       const r = await uploadPlanilha(fd);
