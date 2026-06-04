@@ -33,7 +33,8 @@ export default async function AnimaisPage({ searchParams }: { searchParams: Prom
   const slice = filtered.slice((safePage - 1) * PAGE_SIZE, safePage * PAGE_SIZE);
 
   return (
-    <div className="flex flex-col gap-6">
+    <div className="flex flex-col gap-6 pb-12">
+      <Link href="/" className="text-xl text-muted">← Início</Link>
       <h1 className="text-3xl sm:text-4xl font-bold">Animais</h1>
 
       <form className="flex flex-col sm:flex-row gap-3 sm:gap-4 items-stretch">

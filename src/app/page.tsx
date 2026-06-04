@@ -1,7 +1,9 @@
-import { KpiCard, MiniKpi } from "@/components/kpi-card";
+import { BigCard } from "@/components/kpi-card";
 import { getNascenteProperty } from "@/lib/property";
 import { getActiveAnimals } from "@/lib/sync";
-import { AGE_BUCKETS, computeStats, type Animal } from "@/lib/cattle";
+import { getDb, schema } from "@/db";
+import { eq, desc } from "drizzle-orm";
+import { computeStats, type Animal } from "@/lib/cattle";
 import { formatDateBR } from "@/lib/utils";
 import Link from "next/link";
 
@@ -37,68 +39,58 @@ export default async function Page() {
   const animals = rows.map(toAnimal).filter((a): a is Animal => a !== null);
   const stats = computeStats(animals);
 
+  const db = getDb();
+  const lastBatch = (
+    await db
+      .select()
+      .from(schema.uploadBatches)
+      .where(eq(schema.uploadBatches.propertyId, property.id))
+      .orderBy(desc(schema.uploadBatches.uploadedAt))
+      .limit(1)
+  )[0];
+
   if (rows.length === 0) {
     return (
       <div className="flex flex-col items-center justify-center py-20 gap-6 text-center">
-        <h1 className="text-4xl sm:text-5xl font-bold">Sem dados ainda</h1>
-        <p className="text-xl sm:text-2xl text-muted max-w-2xl">
-          Nenhuma planilha foi importada. Quando o Gonzaga enviar a próxima planilha, os números aparecem aqui.
-        </p>
-        <Link
-          href="/painel"
-          className="inline-flex items-center px-8 py-4 rounded-xl bg-accent text-black font-bold text-xl hover:bg-accent/90 transition"
-        >
-          Abrir painel
+        <h1 className="text-4xl font-bold">Sem dados ainda</h1>
+        <p className="text-2xl text-muted">Envie a planilha para ver os números.</p>
+        <Link href="/painel" className="px-8 py-5 rounded-2xl bg-accent text-black font-bold text-2xl">
+          Enviar planilha
         </Link>
       </div>
     );
   }
 
   return (
-    <div className="flex flex-col gap-8 sm:gap-10">
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-        <KpiCard label="Total na fazenda" value={stats.total} hint="Animais ativos hoje" />
-        <KpiCard
-          label="Liberados para venda"
-          value={stats.releasedForSale}
-          tone="accent"
-          hint="Mais de 52 dias desde a brincagem"
-        />
-        <KpiCard
-          label="Mais de 90 dias na fazenda"
-          value={stats.over90Days}
-          tone="info"
-          hint="Contados a partir do envio do SISBOV"
-        />
-        <KpiCard
-          label="Atualizado em"
-          value={stats.total > 0 ? new Date().getDate() : 0}
-          tone="default"
-          hint={formatDateBR(stats.generatedAt) + " — hoje"}
-        />
-      </div>
+    <div className="flex flex-col gap-5 pb-12">
+      {lastBatch && (
+        <p className="text-center text-xl text-muted pt-1">
+          Atualizado em {formatDateBR(new Date(lastBatch.uploadedAt))}
+        </p>
+      )}
 
-      <section>
-        <h2 className="text-2xl sm:text-3xl font-bold mb-4">Faixa etária</h2>
-        <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-5">
-          {AGE_BUCKETS.map((b) => (
-            <MiniKpi key={b.key} label={b.label} value={stats.byAge[b.key]} />
-          ))}
-        </div>
-      </section>
+      <BigCard label="Total na fazenda" value={stats.total} hint="Animais na fazenda hoje" />
+      <BigCard label="Liberados para venda" value={stats.releasedForSale} tone="accent" hint="Mais de 52 dias desde a brincagem" />
+      <BigCard label="Mais de 90 dias na fazenda" value={stats.over90Days} tone="info" hint="Contados do envio do SISBOV" />
 
-      <div className="flex flex-wrap gap-4 mt-4">
+      <h2 className="text-2xl font-bold text-muted mt-4 px-2">Por idade</h2>
+      <BigCard label="0 a 12 meses" value={stats.byAge["0-12"]} />
+      <BigCard label="13 a 24 meses" value={stats.byAge["13-24"]} />
+      <BigCard label="25 a 36 meses" value={stats.byAge["25-36"]} />
+      <BigCard label="Mais de 36 meses" value={stats.byAge["37+"]} />
+
+      <div className="flex flex-col gap-3 mt-6">
         <Link
           href="/animais"
-          className="inline-flex items-center px-6 py-4 rounded-xl bg-surface ring-1 ring-white/20 text-xl font-semibold hover:bg-white/5 transition"
+          className="block text-center px-6 py-5 rounded-2xl bg-surface ring-1 ring-white/20 text-2xl font-bold"
         >
-          Ver lista de animais
+          Ver todos os animais
         </Link>
         <Link
           href="/painel"
-          className="inline-flex items-center px-6 py-4 rounded-xl bg-surface ring-1 ring-white/20 text-xl font-semibold hover:bg-white/5 transition"
+          className="block text-center px-6 py-5 rounded-2xl bg-surface ring-1 ring-white/20 text-2xl font-bold"
         >
-          Painel do produtor
+          Enviar planilha
         </Link>
       </div>
     </div>

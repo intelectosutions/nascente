@@ -1,8 +1,6 @@
 "use server";
 
-import { redirect } from "next/navigation";
 import { revalidatePath } from "next/cache";
-import { isAuthenticated, signOut } from "@/lib/auth";
 import { parseSpreadsheet } from "@/lib/parser";
 import { applySync, previewSync } from "@/lib/sync";
 import { getNascenteProperty } from "@/lib/property";
@@ -15,7 +13,6 @@ export type UploadResult = {
 };
 
 export async function uploadPlanilha(formData: FormData): Promise<UploadResult> {
-  if (!(await isAuthenticated())) return { ok: false, message: "Sessão expirada. Faça login novamente." };
   const file = formData.get("planilha");
   if (!(file instanceof File)) return { ok: false, message: "Nenhum arquivo enviado." };
   const buf = Buffer.from(await file.arrayBuffer());
@@ -48,9 +45,4 @@ export async function uploadPlanilha(formData: FormData): Promise<UploadResult> 
     message: `Pronto! ${res.newCount} novos, ${res.updatedCount} atualizados, ${res.exitedCount} saídos.`,
     warnings: parsed.warnings,
   };
-}
-
-export async function logout() {
-  await signOut();
-  redirect("/painel/login");
 }
