@@ -17,6 +17,9 @@ BRANCH="unknown"
 if [ -e ".git" ] && git rev-parse --git-dir >/dev/null 2>&1; then
   COMMIT=$(git rev-parse --short=7 HEAD 2>/dev/null || echo "unknown")
   BRANCH=$(git rev-parse --abbrev-ref HEAD 2>/dev/null || echo "unknown")
+elif [ -n "$SOURCE_COMMIT" ]; then
+  COMMIT=$(echo "$SOURCE_COMMIT" | cut -c1-7)
+  BRANCH="${SOURCE_BRANCH:-main}"
 elif [ -n "$GIT_COMMIT" ]; then
   COMMIT=$(echo "$GIT_COMMIT" | cut -c1-7)
   BRANCH="${GIT_BRANCH:-unknown}"
