@@ -33,6 +33,21 @@ export const animals = pgTable(
   })
 );
 
+export const herdBalances = pgTable("herd_balances", {
+  id: serial("id").primaryKey(),
+  propertyId: integer("property_id")
+    .notNull()
+    .references(() => properties.id)
+    .unique(),
+  age0_2: integer("age_0_2").notNull().default(0),
+  age3_8: integer("age_3_8").notNull().default(0),
+  age9_12: integer("age_9_12").notNull().default(0),
+  age13_24: integer("age_13_24").notNull().default(0),
+  age25_36: integer("age_25_36").notNull().default(0),
+  age37plus: integer("age_37_plus").notNull().default(0),
+  updatedAt: timestamp("updated_at", { withTimezone: true }).defaultNow().notNull(),
+});
+
 export const uploadBatches = pgTable("upload_batches", {
   id: serial("id").primaryKey(),
   propertyId: integer("property_id").notNull().references(() => properties.id),
@@ -58,3 +73,4 @@ export type Property = typeof properties.$inferSelect;
 export type AnimalRow = typeof animals.$inferSelect;
 export type AnimalInsert = typeof animals.$inferInsert;
 export type UploadBatch = typeof uploadBatches.$inferSelect;
+export type HerdBalance = typeof herdBalances.$inferSelect;
