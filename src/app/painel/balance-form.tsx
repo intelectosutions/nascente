@@ -80,7 +80,11 @@ export function BalanceForm({ slug, initial }: { slug: string; initial: Values }
         </div>
       </div>
 
-      <button onClick={save} disabled={pending} className="px-6 py-5 rounded-2xl bg-accent text-black font-bold text-2xl disabled:opacity-50">
+      <button
+        onClick={save}
+        disabled={pending}
+        className="px-6 py-5 rounded-[22px] bg-gradient-to-br from-accent to-green-600 text-black font-bold text-2xl shadow-[0_16px_45px_-18px_rgba(34,197,94,0.6)] active:scale-[0.98] transition disabled:opacity-50"
+      >
         {pending ? "Salvando…" : "Salvar saldo"}
       </button>
 

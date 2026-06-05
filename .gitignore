@@ -11,3 +11,6 @@ build
 public/version.json
 drizzle/meta
 .vercel
+
+# Config local de dev (preview)
+.claude/

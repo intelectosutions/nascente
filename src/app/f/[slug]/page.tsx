@@ -48,16 +48,21 @@ export default async function FarmDashboard({ params }: { params: Promise<{ slug
   const tone = restricao ? "restricao" : "default";
 
   const header = (
-    <div className="flex flex-col items-center text-center gap-2">
-      <Link href="/" className="self-start text-xl text-muted">← Fazendas</Link>
-      <h1 className={`text-4xl sm:text-5xl font-black mt-1 ${restricao ? "text-red-300" : ""}`}>{farm.nome}</h1>
+    <div className="flex flex-col items-center text-center gap-3">
+      <Link href="/" className="self-start text-xl text-muted hover:text-ink transition">← Fazendas</Link>
+      <h1 className={`text-4xl sm:text-5xl font-black tracking-tight mt-1 ${restricao ? "text-red-300" : ""}`}>{farm.nome}</h1>
       {restricao && (
-        <div className="rounded-2xl bg-red-500/10 ring-1 ring-red-400/50 px-6 py-3 mt-1">
-          <span className="text-2xl font-bold text-red-300">⚠ Fazenda com restrição</span>
+        <div className="rounded-full bg-red-500/15 ring-1 ring-red-400/50 px-6 py-3 shadow-[0_10px_30px_-12px_rgba(239,68,68,0.5)]">
+          <span className="text-xl sm:text-2xl font-bold text-red-300">⚠ Fazenda com restrição</span>
         </div>
       )}
     </div>
   );
+
+  const primaryBtn =
+    "block text-center px-6 py-6 rounded-[22px] bg-gradient-to-br from-accent to-green-600 text-black text-2xl font-bold shadow-[0_16px_45px_-18px_rgba(34,197,94,0.6)] active:scale-[0.98] transition";
+  const secondaryBtn =
+    "block text-center px-6 py-5 rounded-[22px] bg-white/5 ring-1 ring-white/15 text-2xl font-bold backdrop-blur-sm hover:bg-white/10 active:scale-[0.98] transition";
 
   // MODO LISTA: animais individuais (SISBOV + datas)
   if (rows.length > 0) {
@@ -88,12 +93,8 @@ export default async function FarmDashboard({ params }: { params: Promise<{ slug
         <BigCard label="25 a 36 meses" value={stats.byAge["25-36"]} tone={tone} />
         <BigCard label="Mais de 36 meses" value={stats.byAge["37+"]} tone={tone} />
         <div className="flex flex-col gap-3 mt-6">
-          <Link href={`/f/${slug}/buscar`} className="block text-center px-6 py-6 rounded-2xl bg-accent text-black text-2xl font-bold">
-            Pesquisar animal
-          </Link>
-          <Link href={`/painel/${slug}`} className="block text-center px-6 py-5 rounded-2xl bg-surface ring-1 ring-white/20 text-2xl font-bold">
-            Enviar planilha
-          </Link>
+          <Link href={`/f/${slug}/buscar`} className={primaryBtn}>Pesquisar animal</Link>
+          <Link href={`/painel/${slug}`} className={secondaryBtn}>Enviar planilha</Link>
         </div>
       </div>
     );
@@ -122,9 +123,7 @@ export default async function FarmDashboard({ params }: { params: Promise<{ slug
         <BigCard label="25 a 36 meses" value={t.b25_36.t} tone={tone} hint={ageHint(t.b25_36)} />
         <BigCard label="Mais de 36 meses" value={t.b37.t} tone={tone} hint={ageHint(t.b37)} />
         <div className="flex flex-col gap-3 mt-6">
-          <Link href={`/painel/${slug}`} className="block text-center px-6 py-5 rounded-2xl bg-surface ring-1 ring-white/20 text-2xl font-bold">
-            Atualizar saldo
-          </Link>
+          <Link href={`/painel/${slug}`} className={secondaryBtn}>Atualizar saldo</Link>
         </div>
       </div>
     );

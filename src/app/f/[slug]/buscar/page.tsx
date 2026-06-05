@@ -78,9 +78,11 @@ export default async function BuscarPage({
           defaultValue={q}
           autoFocus
           placeholder="Número do SISBOV ou do manejo"
-          className="w-full px-6 py-6 rounded-2xl bg-surface ring-1 ring-white/20 text-2xl placeholder:text-muted/60 focus:ring-accent outline-none"
+          className="w-full px-6 py-6 rounded-[22px] bg-white/5 ring-1 ring-white/15 text-2xl placeholder:text-muted/60 focus:ring-accent focus:bg-white/[0.07] outline-none backdrop-blur-sm transition"
         />
-        <button className="px-6 py-6 rounded-2xl bg-accent text-black font-bold text-2xl">Pesquisar</button>
+        <button className="px-6 py-6 rounded-[22px] bg-gradient-to-br from-accent to-green-600 text-black font-bold text-2xl shadow-[0_16px_45px_-18px_rgba(34,197,94,0.6)] active:scale-[0.98] transition">
+          Pesquisar
+        </button>
       </form>
 
       {q && result && <AnimalDetail a={result} />}
