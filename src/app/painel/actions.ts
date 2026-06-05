@@ -64,12 +64,12 @@ export async function saveBalanceAction(formData: FormData): Promise<SaveBalance
     return Number.isFinite(n) && n >= 0 ? n : 0;
   };
   const values = {
-    age0_2: num("age0_2"),
-    age3_8: num("age3_8"),
-    age9_12: num("age9_12"),
-    age13_24: num("age13_24"),
-    age25_36: num("age25_36"),
-    age37plus: num("age37plus"),
+    m0_2: num("m0_2"), f0_2: num("f0_2"),
+    m3_8: num("m3_8"), f3_8: num("f3_8"),
+    m9_12: num("m9_12"), f9_12: num("f9_12"),
+    m13_24: num("m13_24"), f13_24: num("f13_24"),
+    m25_36: num("m25_36"), f25_36: num("f25_36"),
+    m37plus: num("m37plus"), f37plus: num("f37plus"),
   };
   const total = Object.values(values).reduce((a, b) => a + b, 0);
 

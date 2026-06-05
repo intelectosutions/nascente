@@ -32,12 +32,12 @@ export default async function PainelFazenda({ params }: { params: Promise<{ slug
   const usaPlanilha = activeCount > 0;
 
   const initialBalance = {
-    age0_2: balance?.age0_2 ?? 0,
-    age3_8: balance?.age3_8 ?? 0,
-    age9_12: balance?.age9_12 ?? 0,
-    age13_24: balance?.age13_24 ?? 0,
-    age25_36: balance?.age25_36 ?? 0,
-    age37plus: balance?.age37plus ?? 0,
+    m0_2: balance?.m0_2 ?? 0, f0_2: balance?.f0_2 ?? 0,
+    m3_8: balance?.m3_8 ?? 0, f3_8: balance?.f3_8 ?? 0,
+    m9_12: balance?.m9_12 ?? 0, f9_12: balance?.f9_12 ?? 0,
+    m13_24: balance?.m13_24 ?? 0, f13_24: balance?.f13_24 ?? 0,
+    m25_36: balance?.m25_36 ?? 0, f25_36: balance?.f25_36 ?? 0,
+    m37plus: balance?.m37plus ?? 0, f37plus: balance?.f37plus ?? 0,
   };
 
   const lastBatches =

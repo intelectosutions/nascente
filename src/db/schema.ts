@@ -39,12 +39,18 @@ export const herdBalances = pgTable("herd_balances", {
     .notNull()
     .references(() => properties.id)
     .unique(),
-  age0_2: integer("age_0_2").notNull().default(0),
-  age3_8: integer("age_3_8").notNull().default(0),
-  age9_12: integer("age_9_12").notNull().default(0),
-  age13_24: integer("age_13_24").notNull().default(0),
-  age25_36: integer("age_25_36").notNull().default(0),
-  age37plus: integer("age_37_plus").notNull().default(0),
+  m0_2: integer("m_0_2").notNull().default(0),
+  f0_2: integer("f_0_2").notNull().default(0),
+  m3_8: integer("m_3_8").notNull().default(0),
+  f3_8: integer("f_3_8").notNull().default(0),
+  m9_12: integer("m_9_12").notNull().default(0),
+  f9_12: integer("f_9_12").notNull().default(0),
+  m13_24: integer("m_13_24").notNull().default(0),
+  f13_24: integer("f_13_24").notNull().default(0),
+  m25_36: integer("m_25_36").notNull().default(0),
+  f25_36: integer("f_25_36").notNull().default(0),
+  m37plus: integer("m_37_plus").notNull().default(0),
+  f37plus: integer("f_37_plus").notNull().default(0),
   updatedAt: timestamp("updated_at", { withTimezone: true }).defaultNow().notNull(),
 });
 

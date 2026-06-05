@@ -12,10 +12,13 @@ export function FarmGrid({ basePath, title, subtitle }: { basePath: string; titl
         <Link
           key={f.slug}
           href={`${basePath}/${f.slug}`}
-          className="block rounded-3xl bg-white text-black px-6 py-9 text-center font-black active:scale-[0.98] transition"
+          className={`block rounded-3xl px-6 py-9 text-center font-black active:scale-[0.98] transition ${
+            f.restricao ? "bg-red-200 text-red-900" : "bg-white text-black"
+          }`}
           style={{ fontSize: "clamp(2.25rem, 10vw, 3.5rem)" }}
         >
           {f.nome}
+          {f.restricao && <span className="block text-xl sm:text-2xl font-bold mt-1">⚠ com restrição</span>}
         </Link>
       ))}
     </div>

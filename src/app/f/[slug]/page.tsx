@@ -44,15 +44,22 @@ export default async function FarmDashboard({ params }: { params: Promise<{ slug
   const property = await getPropertyBySlug(slug);
   const rows = property ? await getActiveAnimals(property.id) : [];
   const balance = property ? await getBalanceByPropertyId(property.id) : null;
+  const restricao = !!farm.restricao;
+  const tone = restricao ? "restricao" : "default";
 
   const header = (
-    <div className="flex flex-col gap-1">
-      <Link href="/" className="text-xl text-muted">← Fazendas</Link>
-      <h1 className="text-4xl sm:text-5xl font-black mt-1">{farm.nome}</h1>
+    <div className="flex flex-col items-center text-center gap-2">
+      <Link href="/" className="self-start text-xl text-muted">← Fazendas</Link>
+      <h1 className={`text-4xl sm:text-5xl font-black mt-1 ${restricao ? "text-red-300" : ""}`}>{farm.nome}</h1>
+      {restricao && (
+        <div className="rounded-2xl bg-red-500/10 ring-1 ring-red-400/50 px-6 py-3 mt-1">
+          <span className="text-2xl font-bold text-red-300">⚠ Fazenda com restrição</span>
+        </div>
+      )}
     </div>
   );
 
-  // MODO LISTA: tem animais individuais (SISBOV + datas) → tudo calculado
+  // MODO LISTA: animais individuais (SISBOV + datas)
   if (rows.length > 0) {
     const animals = rows.map(toAnimal).filter((a): a is Animal => a !== null);
     const stats = computeStats(animals);
@@ -71,17 +78,15 @@ export default async function FarmDashboard({ params }: { params: Promise<{ slug
     return (
       <div className="flex flex-col gap-5 pb-12">
         {header}
-        {lastBatch && (
-          <p className="text-center text-xl text-muted">Atualizado em {formatDateBR(new Date(lastBatch.uploadedAt))}</p>
-        )}
-        <BigCard label="Total na fazenda" value={stats.total} hint="Animais na fazenda hoje" />
-        <BigCard label="Liberados para venda" value={stats.releasedForSale} tone="accent" hint="Mais de 52 dias desde a brincagem" />
-        <BigCard label="Mais de 90 dias na fazenda" value={stats.over90Days} tone="info" hint="Contados do envio do SISBOV" />
-        <h2 className="text-2xl font-bold text-muted mt-4 px-2">Por idade</h2>
-        <BigCard label="0 a 12 meses" value={stats.byAge["0-12"]} />
-        <BigCard label="13 a 24 meses" value={stats.byAge["13-24"]} />
-        <BigCard label="25 a 36 meses" value={stats.byAge["25-36"]} />
-        <BigCard label="Mais de 36 meses" value={stats.byAge["37+"]} />
+        {lastBatch && <p className="text-center text-xl text-muted">Atualizado em {formatDateBR(new Date(lastBatch.uploadedAt))}</p>}
+        <BigCard label="Total na fazenda" value={stats.total} tone={tone} hint="Animais na fazenda hoje" />
+        <BigCard label="Liberados para venda" value={stats.releasedForSale} tone={restricao ? "restricao" : "accent"} hint="Mais de 52 dias desde a brincagem" />
+        <BigCard label="Mais de 90 dias na fazenda" value={stats.over90Days} tone={restricao ? "restricao" : "info"} hint="Contados do envio do SISBOV" />
+        <h2 className="text-2xl font-bold text-muted mt-4 text-center">Por idade</h2>
+        <BigCard label="0 a 12 meses" value={stats.byAge["0-12"]} tone={tone} />
+        <BigCard label="13 a 24 meses" value={stats.byAge["13-24"]} tone={tone} />
+        <BigCard label="25 a 36 meses" value={stats.byAge["25-36"]} tone={tone} />
+        <BigCard label="Mais de 36 meses" value={stats.byAge["37+"]} tone={tone} />
         <div className="flex flex-col gap-3 mt-6">
           <Link href={`/f/${slug}/buscar`} className="block text-center px-6 py-6 rounded-2xl bg-accent text-black text-2xl font-bold">
             Pesquisar animal
@@ -94,19 +99,28 @@ export default async function FarmDashboard({ params }: { params: Promise<{ slug
     );
   }
 
-  // MODO SALDO: sem lista individual, mas com saldo informado → totais por faixa
+  // MODO SALDO: totais por faixa (com M/F quando houver fêmeas)
   if (balance) {
     const t = balanceTotals(balance);
+    const f = t.hasFemales;
+    const ageHint = (b: { m: number; f: number }) => (f ? `M ${b.m} · F ${b.f}` : undefined);
+
     return (
       <div className="flex flex-col gap-5 pb-12">
         {header}
         <p className="text-center text-xl text-muted">Atualizado em {formatDateBR(new Date(balance.updatedAt))}</p>
-        <BigCard label="Total na fazenda" value={t.total} hint="Saldo do rebanho" />
-        <h2 className="text-2xl font-bold text-muted mt-4 px-2">Por idade</h2>
-        <BigCard label="0 a 12 meses" value={t.a0_12} />
-        <BigCard label="13 a 24 meses" value={t.a13_24} />
-        <BigCard label="25 a 36 meses" value={t.a25_36} />
-        <BigCard label="Mais de 36 meses" value={t.a37} />
+        <BigCard label="Total na fazenda" value={t.total} tone={tone} hint="Saldo do rebanho" />
+        {f && (
+          <div className="grid grid-cols-2 gap-4">
+            <BigCard label="Machos" value={t.totalM} tone="info" />
+            <BigCard label="Fêmeas" value={t.totalF} tone="fem" />
+          </div>
+        )}
+        <h2 className="text-2xl font-bold text-muted mt-4 text-center">Por idade</h2>
+        <BigCard label="0 a 12 meses" value={t.b0_12.t} tone={tone} hint={ageHint(t.b0_12)} />
+        <BigCard label="13 a 24 meses" value={t.b13_24.t} tone={tone} hint={ageHint(t.b13_24)} />
+        <BigCard label="25 a 36 meses" value={t.b25_36.t} tone={tone} hint={ageHint(t.b25_36)} />
+        <BigCard label="Mais de 36 meses" value={t.b37.t} tone={tone} hint={ageHint(t.b37)} />
         <div className="flex flex-col gap-3 mt-6">
           <Link href={`/painel/${slug}`} className="block text-center px-6 py-5 rounded-2xl bg-surface ring-1 ring-white/20 text-2xl font-bold">
             Atualizar saldo
