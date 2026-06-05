@@ -6,7 +6,7 @@ export const FARMS: Farm[] = [
   { slug: "fazenda-nascente", nome: "Nascente", codigo: "50985" },
   { slug: "sao-jose", nome: "São José", codigo: "354420204580001", municipio: "Riolândia/SP" },
   { slug: "santa-monica", nome: "Santa Monica II", codigo: "354420204640001" },
-  { slug: "sao-carlos", nome: "São Carlos", codigo: null },
+  { slug: "sao-carlos", nome: "São Carlos", codigo: "354420205480001", municipio: "Riolândia/SP" },
 ];
 
 export function getFarm(slug: string): Farm | undefined {
