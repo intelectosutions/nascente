@@ -35,6 +35,9 @@ COPY --from=builder --chown=nextjs:nodejs /app/.next/static ./.next/static
 COPY --from=builder /app/drizzle ./drizzle
 COPY --from=builder /app/scripts ./scripts
 COPY --from=builder /app/node_modules/postgres ./node_modules/postgres
+# web-push (server-only) + suas deps transitivas que o trace do Next não copia
+RUN npm install --no-save --no-package-lock web-push@3.6.7 \
+  && chown -R nextjs:nodejs /app/node_modules
 RUN chmod +x /app/scripts/docker-entrypoint.sh /app/scripts/migrate.mjs 2>/dev/null || true
 RUN chown -R nextjs:nodejs /app/scripts
 USER nextjs

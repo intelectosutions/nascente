@@ -1,7 +1,13 @@
 import { FarmGrid } from "@/components/farm-grid";
+import { PushEnable } from "@/components/push-enable";
 
 export const dynamic = "force-dynamic";
 
 export default function Home() {
-  return <FarmGrid basePath="/f" title="Escolha a fazenda" />;
+  return (
+    <div className="flex flex-col gap-5">
+      <FarmGrid basePath="/f" title="Escolha a fazenda" />
+      <PushEnable />
+    </div>
+  );
 }

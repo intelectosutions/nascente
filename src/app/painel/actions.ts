@@ -6,6 +6,7 @@ import { applySync, previewSync } from "@/lib/sync";
 import { ensurePropertyForSlug } from "@/lib/property";
 import { getFarm } from "@/lib/farms";
 import { saveBalance } from "@/lib/balance";
+import { sendPushToAll } from "@/lib/push";
 
 export type UploadResult = {
   ok: boolean;
@@ -43,6 +44,12 @@ export async function uploadPlanilha(formData: FormData): Promise<UploadResult> 
     };
   }
   const res = await applySync(property.id, parsed.rows, file.name);
+  const farm = getFarm(slug)!;
+  await sendPushToAll(
+    `${farm.nome} — rebanho atualizado`,
+    `${res.newCount} novos · ${res.updatedCount} atualizados · ${res.exitedCount} saídos`,
+    `/f/${slug}`
+  );
   revalidatePath("/");
   revalidatePath(`/f/${slug}`);
   revalidatePath(`/painel/${slug}`);
@@ -75,6 +82,8 @@ export async function saveBalanceAction(formData: FormData): Promise<SaveBalance
 
   const property = await ensurePropertyForSlug(slug);
   await saveBalance(property.id, values);
+  const farm = getFarm(slug)!;
+  await sendPushToAll(`${farm.nome} — saldo atualizado`, `Total de ${total} animais`, `/f/${slug}`);
   revalidatePath("/");
   revalidatePath(`/f/${slug}`);
   revalidatePath(`/painel/${slug}`);

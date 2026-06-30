@@ -65,6 +65,14 @@ export const uploadBatches = pgTable("upload_batches", {
   uploadedAt: timestamp("uploaded_at", { withTimezone: true }).defaultNow().notNull(),
 });
 
+export const pushSubscriptions = pgTable("push_subscriptions", {
+  id: serial("id").primaryKey(),
+  endpoint: text("endpoint").notNull().unique(),
+  p256dh: text("p256dh").notNull(),
+  auth: text("auth").notNull(),
+  createdAt: timestamp("created_at", { withTimezone: true }).defaultNow().notNull(),
+});
+
 export const auditLog = pgTable("audit_log", {
   id: serial("id").primaryKey(),
   batchId: integer("batch_id").references(() => uploadBatches.id),
@@ -80,3 +88,4 @@ export type AnimalRow = typeof animals.$inferSelect;
 export type AnimalInsert = typeof animals.$inferInsert;
 export type UploadBatch = typeof uploadBatches.$inferSelect;
 export type HerdBalance = typeof herdBalances.$inferSelect;
+export type PushSubscriptionRow = typeof pushSubscriptions.$inferSelect;
