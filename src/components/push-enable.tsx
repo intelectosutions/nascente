@@ -27,7 +27,6 @@ export function PushEnable() {
     const isIOS = /iphone|ipad|ipod/i.test(window.navigator.userAgent);
 
     if (!("serviceWorker" in navigator) || !("PushManager" in window) || !("Notification" in window)) {
-      // iPhone fora do app instalado não tem PushManager — orienta instalar
       setState(isIOS && !isStandalone ? "ios-install" : "unsupported");
       return;
     }
@@ -41,7 +40,7 @@ export function PushEnable() {
         }
         setState(Notification.permission === "denied" ? "denied" : "prompt");
       })
-      .catch(() => setState("unsupported"));
+      .catch(() => setState(isIOS && !isStandalone ? "ios-install" : "unsupported"));
   }, []);
 
   async function enable() {
@@ -69,29 +68,27 @@ export function PushEnable() {
     }
   }
 
-  if (state === "loading" || state === "unsupported") return null;
-
-  if (state === "granted") {
-    return (
-      <div className="rounded-2xl bg-accent/10 ring-1 ring-accent/30 px-5 py-4 text-center text-lg sm:text-xl font-semibold text-accent">
-        🔔 Avisos ativados neste celular
-      </div>
-    );
-  }
+  // Já ativado ou não aplicável: não ocupa espaço no topo
+  if (state === "loading" || state === "unsupported" || state === "granted") return null;
 
   if (state === "ios-install") {
     return (
-      <div className="rounded-2xl bg-white/5 ring-1 ring-white/15 px-5 py-4 text-center text-base sm:text-lg text-muted">
-        Para receber avisos no iPhone: toque em <strong className="text-ink">Compartilhar</strong> e depois{" "}
-        <strong className="text-ink">Adicionar à Tela de Início</strong>. Abra pelo ícone e ative os avisos.
+      <div className="rounded-2xl bg-warn/10 ring-1 ring-warn/40 px-5 py-5 flex flex-col gap-2">
+        <div className="text-xl sm:text-2xl font-bold text-warn">🔔 Receber avisos no iPhone</div>
+        <ol className="text-base sm:text-lg text-ink/90 leading-relaxed list-decimal list-inside">
+          <li>Toque no botão <strong>Compartilhar</strong> (quadrado com seta ↑) embaixo</li>
+          <li>Escolha <strong>Adicionar à Tela de Início</strong></li>
+          <li>Abra o app pelo <strong>ícone novo</strong> na tela do celular</li>
+          <li>Toque em <strong>Receber avisos</strong> que vai aparecer aqui</li>
+        </ol>
       </div>
     );
   }
 
   if (state === "denied") {
     return (
-      <div className="rounded-2xl bg-white/5 ring-1 ring-white/15 px-5 py-4 text-center text-base sm:text-lg text-muted">
-        Avisos bloqueados. Permita notificações nas configurações do navegador para este site.
+      <div className="rounded-2xl bg-white/5 ring-1 ring-white/15 px-5 py-4 text-base sm:text-lg text-muted">
+        Avisos bloqueados. Ative as notificações deste app nos Ajustes do celular.
       </div>
     );
   }
@@ -100,7 +97,7 @@ export function PushEnable() {
     <button
       onClick={enable}
       disabled={state === "working"}
-      className="w-full rounded-2xl bg-white/5 ring-1 ring-white/20 px-6 py-5 text-center text-xl sm:text-2xl font-bold backdrop-blur-sm active:scale-[0.98] transition disabled:opacity-50"
+      className="w-full rounded-2xl bg-gradient-to-br from-accent to-green-600 text-black px-6 py-5 text-center text-xl sm:text-2xl font-bold shadow-[0_14px_40px_-16px_rgba(34,197,94,0.6)] active:scale-[0.98] transition disabled:opacity-50"
     >
       {state === "working" ? "Ativando…" : "🔔 Receber avisos no celular"}
     </button>

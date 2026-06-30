@@ -6,8 +6,8 @@ export const dynamic = "force-dynamic";
 export default function Home() {
   return (
     <div className="flex flex-col gap-5">
-      <FarmGrid basePath="/f" title="Escolha a fazenda" />
       <PushEnable />
+      <FarmGrid basePath="/f" title="Escolha a fazenda" />
     </div>
   );
 }
