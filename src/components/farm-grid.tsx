@@ -1,13 +1,15 @@
 import Link from "next/link";
 import { FARMS, restricaoInfo } from "@/lib/farms";
 
-export function FarmGrid({ basePath, title, subtitle }: { basePath: string; title: string; subtitle?: string }) {
+export function FarmGrid({ basePath, title, subtitle }: { basePath: string; title?: string; subtitle?: string }) {
   return (
     <div className="flex flex-col gap-4 pb-12">
-      <div className="pt-3 pb-1 text-center">
-        <h1 className="text-3xl sm:text-4xl font-bold tracking-tight">{title}</h1>
-        {subtitle && <p className="text-xl text-muted mt-2">{subtitle}</p>}
-      </div>
+      {(title || subtitle) && (
+        <div className="pt-3 pb-1 text-center">
+          {title && <h1 className="text-3xl sm:text-4xl font-bold tracking-tight">{title}</h1>}
+          {subtitle && <p className="text-xl text-muted mt-2">{subtitle}</p>}
+        </div>
+      )}
       {FARMS.map((f) => {
         const restricao = restricaoInfo(f);
         return (

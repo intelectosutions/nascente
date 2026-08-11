@@ -1,6 +1,7 @@
 import type { Metadata, Viewport } from "next";
 import "./globals.css";
 import { PwaRegister } from "@/components/pwa-register";
+import { PullToRefresh } from "@/components/pull-to-refresh";
 
 export const metadata: Metadata = {
   title: "Fazenda Nascente",
@@ -20,6 +21,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
   return (
     <html lang="pt-BR" suppressHydrationWarning>
       <body className="min-h-screen">
+        <PullToRefresh />
         <main className="px-4 py-5 sm:px-6">
           <div className="max-w-2xl mx-auto">{children}</div>
         </main>

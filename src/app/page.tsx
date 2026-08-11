@@ -7,7 +7,7 @@ export default function Home() {
   return (
     <div className="flex flex-col gap-5">
       <PushEnable />
-      <FarmGrid basePath="/f" title="Escolha a fazenda" />
+      <FarmGrid basePath="/f" />
     </div>
   );
 }
