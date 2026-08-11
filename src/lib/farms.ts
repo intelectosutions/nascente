@@ -4,7 +4,7 @@ export type Farm = { slug: string; nome: string; codigo: string | null; municipi
 // A property só é criada no banco quando há dado real (planilha ou saldo informado).
 export const FARMS: Farm[] = [
   { slug: "fazenda-nascente", nome: "Nascente", codigo: "50985" },
-  { slug: "sao-jose", nome: "São José", codigo: "354420204580001", municipio: "Riolândia/SP", restricao: true },
+  { slug: "sao-jose", nome: "São José", codigo: "354420204580001", municipio: "Riolândia/SP" },
   { slug: "santa-monica", nome: "Santa Monica II", codigo: "354420204640001" },
   { slug: "sao-carlos", nome: "São Carlos", codigo: "354420205480001", municipio: "Riolândia/SP" },
 ];
