@@ -1,6 +1,6 @@
 import { BigCard } from "@/components/kpi-card";
 import { getPropertyBySlug } from "@/lib/property";
-import { getFarm } from "@/lib/farms";
+import { getFarm, restricaoInfo } from "@/lib/farms";
 import { getActiveAnimals } from "@/lib/sync";
 import { getBalanceByPropertyId, balanceTotals } from "@/lib/balance";
 import { getDb, schema } from "@/db";
@@ -44,16 +44,18 @@ export default async function FarmDashboard({ params }: { params: Promise<{ slug
   const property = await getPropertyBySlug(slug);
   const rows = property ? await getActiveAnimals(property.id) : [];
   const balance = property ? await getBalanceByPropertyId(property.id) : null;
-  const restricao = !!farm.restricao;
+  const restricaoAtiva = restricaoInfo(farm);
+  const restricao = !!restricaoAtiva;
   const tone = restricao ? "restricao" : "default";
 
   const header = (
     <div className="flex flex-col items-center text-center gap-3">
       <Link href="/" className="self-start text-xl text-muted hover:text-ink transition">← Fazendas</Link>
       <h1 className={`text-4xl sm:text-5xl font-black tracking-tight mt-1 ${restricao ? "text-red-300" : ""}`}>{farm.nome}</h1>
-      {restricao && (
+      {restricaoAtiva && (
         <div className="rounded-full bg-red-500/15 ring-1 ring-red-400/50 px-6 py-3 shadow-[0_10px_30px_-12px_rgba(239,68,68,0.5)]">
-          <span className="text-xl sm:text-2xl font-bold text-red-300">⚠ Fazenda com restrição</span>
+          <span className="block text-xl sm:text-2xl font-bold text-red-300">⚠ Fazenda com restrição</span>
+          <span className="block text-lg sm:text-xl font-semibold text-red-300/80">noventena até {restricaoAtiva.ateBR}</span>
         </div>
       )}
     </div>
