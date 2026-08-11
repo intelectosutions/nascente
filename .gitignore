@@ -14,3 +14,4 @@ drizzle/meta
 
 # Config local de dev (preview)
 .claude/
+tsconfig.tsbuildinfo
