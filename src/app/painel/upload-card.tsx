@@ -45,7 +45,7 @@ export function UploadCard({ slug }: { slug: string }) {
   }
 
   return (
-    <section className="rounded-xl bg-surface ring-1 ring-ink/10 p-6 flex flex-col gap-5 shadow-sm">
+    <section className="rounded-xl bg-surface ring-1 ring-white/15 p-6 flex flex-col gap-5">
       <h2 className="text-2xl font-bold">Atualizar planilha</h2>
 
       <label
@@ -57,7 +57,7 @@ export function UploadCard({ slug }: { slug: string }) {
           const f = e.dataTransfer.files?.[0];
           pickFile(f || null);
         }}
-        className={`flex flex-col items-center justify-center gap-3 rounded-xl border-2 border-dashed p-10 cursor-pointer transition ${dragOver ? "border-accent bg-accent/5" : "border-ink/25 hover:border-ink/45"}`}
+        className={`flex flex-col items-center justify-center gap-3 rounded-xl border-2 border-dashed p-10 cursor-pointer transition ${dragOver ? "border-accent bg-accent/5" : "border-white/30 hover:border-white/50"}`}
       >
         <input
           type="file"
@@ -87,7 +87,7 @@ export function UploadCard({ slug }: { slug: string }) {
           {pending ? "Aplicando…" : "Aplicar atualização"}
         </button>
         {file && !pending && (
-          <button onClick={() => { setFile(null); setResult(null); }} className="px-5 py-3 rounded-xl ring-1 ring-ink/15 text-lg">
+          <button onClick={() => { setFile(null); setResult(null); }} className="px-5 py-3 rounded-xl ring-1 ring-white/20 text-lg">
             Cancelar
           </button>
         )}

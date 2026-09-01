@@ -28,7 +28,7 @@ export function FontSizeToggle() {
     <button
       onClick={bump}
       aria-label="Aumentar fonte"
-      className="px-4 py-2 rounded-lg border border-ink/15 bg-surface text-ink text-lg font-bold hover:bg-ink/5 transition"
+      className="px-4 py-2 rounded-lg border border-white/20 bg-surface text-ink text-lg font-bold hover:bg-white/10 transition"
     >
       {LABELS[idx]}
     </button>

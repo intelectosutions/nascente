@@ -56,9 +56,9 @@ export function PullToRefresh() {
       }`}
       style={{ top: `calc(env(safe-area-inset-top, 0px) + ${Math.min(pull, 90) - 52}px)` }}
     >
-      <div className="flex items-center gap-3 rounded-full bg-surface/95 ring-1 ring-ink/15 px-6 py-3 shadow-[0_10px_30px_-10px_rgba(24,48,32,0.28)] backdrop-blur-sm">
+      <div className="flex items-center gap-3 rounded-full bg-zinc-900/90 ring-1 ring-white/20 px-6 py-3 shadow-[0_10px_30px_-10px_rgba(0,0,0,0.8)] backdrop-blur-sm">
         {refreshing ? (
-          <span className="inline-block h-6 w-6 rounded-full border-[3px] border-ink/20 border-t-ink animate-spin" />
+          <span className="inline-block h-6 w-6 rounded-full border-[3px] border-white/25 border-t-white animate-spin" />
         ) : (
           <span
             className="text-2xl leading-none transition-transform duration-150"

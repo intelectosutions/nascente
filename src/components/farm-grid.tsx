@@ -18,8 +18,8 @@ export function FarmGrid({ basePath, title, subtitle }: { basePath: string; titl
             href={`${basePath}/${f.slug}`}
             className={`relative block rounded-[28px] px-7 py-9 text-center font-black tracking-tight transition active:scale-[0.98] ring-1 ${
               restricao
-                ? "bg-gradient-to-br from-red-100 to-red-200 text-red-900 ring-red-400/40 shadow-[0_18px_50px_-20px_rgba(194,65,59,0.32)]"
-                : "bg-gradient-to-br from-white to-emerald-50 text-ink ring-ink/10 shadow-[0_16px_45px_-20px_rgba(24,48,32,0.25)]"
+                ? "bg-gradient-to-br from-red-200 to-red-300 text-red-900 ring-red-400/40 shadow-[0_18px_50px_-20px_rgba(239,68,68,0.55)]"
+                : "bg-gradient-to-br from-white to-zinc-200 text-zinc-900 ring-black/5 shadow-[0_16px_45px_-20px_rgba(0,0,0,0.85)]"
             }`}
             style={{ fontSize: "clamp(2.25rem, 10vw, 3.5rem)" }}
           >
@@ -32,7 +32,7 @@ export function FarmGrid({ basePath, title, subtitle }: { basePath: string; titl
             )}
             <span
               className={`absolute right-6 top-1/2 -translate-y-1/2 text-4xl font-normal ${
-                restricao ? "text-red-900/30" : "text-ink/20"
+                restricao ? "text-red-900/30" : "text-black/20"
               }`}
             >
               ›

@@ -57,7 +57,7 @@ export default async function PainelFazenda({ params }: { params: Promise<{ slug
 
       {usaPlanilha ? (
         <>
-          <div className="rounded-2xl bg-surface ring-1 ring-ink/10 p-6 shadow-sm">
+          <div className="rounded-2xl bg-surface ring-1 ring-white/15 p-6">
             <div className="text-xl text-muted">Animais na fazenda hoje</div>
             <div className="font-mono font-black text-6xl mt-2">{activeCount}</div>
             {lastBatches[0] && (
@@ -65,7 +65,7 @@ export default async function PainelFazenda({ params }: { params: Promise<{ slug
             )}
           </div>
           <UploadCard slug={slug} />
-          <section className="rounded-2xl bg-surface ring-1 ring-ink/10 p-6 shadow-sm">
+          <section className="rounded-2xl bg-surface ring-1 ring-white/15 p-6">
             <h2 className="text-2xl font-bold mb-4">Últimos envios</h2>
             {lastBatches.length === 0 ? (
               <p className="text-muted text-lg">Nenhuma planilha enviada ainda.</p>

@@ -78,7 +78,7 @@ export default async function BuscarPage({
           defaultValue={q}
           autoFocus
           placeholder="Número do SISBOV ou do manejo"
-          className="w-full px-6 py-6 rounded-[22px] bg-surface ring-1 ring-ink/15 text-2xl placeholder:text-muted/60 focus:ring-accent focus:bg-white outline-none shadow-sm transition"
+          className="w-full px-6 py-6 rounded-[22px] bg-white/5 ring-1 ring-white/15 text-2xl placeholder:text-muted/60 focus:ring-accent focus:bg-white/[0.07] outline-none backdrop-blur-sm transition"
         />
         <button className="px-6 py-6 rounded-[22px] bg-gradient-to-br from-accent to-green-600 text-black font-bold text-2xl shadow-[0_16px_45px_-18px_rgba(34,197,94,0.6)] active:scale-[0.98] transition">
           Pesquisar
@@ -111,11 +111,11 @@ function AnimalDetail({ a }: { a: Row }) {
       <Field label="Manejo" value={a.nManejo || "—"} mono />
       <Field label="Idade" value={dn ? `${ageInMonths(dn)} meses` : "—"} sub={dn ? `Nasceu em ${formatDateBR(dn)}` : undefined} />
 
-      {sale ? <Tag tone="info">Pode sair da fazenda</Tag> : <Tag tone="muted">Ainda não pode sair da fazenda</Tag>}
+      {sale ? <Tag tone="accent">Liberado para venda</Tag> : <Tag tone="muted">Ainda não liberado para venda</Tag>}
       {dbr && <p className="text-lg text-muted px-2 -mt-2">{daysSinceBrincagem(dbr)} dias desde a brincagem (precisa de 52)</p>}
 
-      {over90 ? <Tag tone="accent">Liberado para abate</Tag> : <Tag tone="muted">Ainda não liberado para abate</Tag>}
-      {de && <p className="text-lg text-muted px-2 -mt-2">{daysSinceEnvioSisbov(de)} dias de permanência na fazenda (precisa de 90)</p>}
+      {over90 ? <Tag tone="info">Mais de 90 dias na fazenda</Tag> : <Tag tone="muted">Menos de 90 dias na fazenda</Tag>}
+      {de && <p className="text-lg text-muted px-2 -mt-2">{daysSinceEnvioSisbov(de)} dias desde o envio do SISBOV</p>}
 
       <Field label="Data brincagem" value={formatDateBR(dbr)} />
       <Field label="Data envio SISBOV" value={formatDateBR(de)} />
@@ -139,7 +139,7 @@ function MultiList({ items, slug }: { items: Row[]; slug: string }) {
     <div className="flex flex-col gap-3">
       <p className="text-xl text-muted">{items.length} animais encontrados. Escolha um:</p>
       {items.map((a) => (
-        <Link key={a.id} href={`/f/${slug}/buscar?q=${encodeURIComponent(a.nSisbov)}`} className="block rounded-2xl bg-surface ring-1 ring-ink/10 p-5 shadow-sm">
+        <Link key={a.id} href={`/f/${slug}/buscar?q=${encodeURIComponent(a.nSisbov)}`} className="block rounded-2xl bg-surface ring-1 ring-white/15 p-5">
           <div className="text-2xl font-mono font-bold">{a.nSisbov}</div>
           <div className="text-lg text-muted">Manejo {a.nManejo || "—"}</div>
         </Link>
@@ -150,7 +150,7 @@ function MultiList({ items, slug }: { items: Row[]; slug: string }) {
 
 function Field({ label, value, sub, mono, big }: { label: string; value: string; sub?: string; mono?: boolean; big?: boolean }) {
   return (
-    <div className="rounded-2xl bg-surface ring-1 ring-ink/10 p-5 sm:p-6 shadow-sm">
+    <div className="rounded-2xl bg-surface ring-1 ring-white/15 p-5 sm:p-6">
       <div className="text-lg sm:text-xl text-muted">{label}</div>
       <div className={`mt-1 font-bold ${mono ? "font-mono" : ""} break-all`} style={{ fontSize: big ? "clamp(2rem, 9vw, 3.5rem)" : "clamp(1.5rem, 5vw, 2.25rem)" }}>
         {value}
@@ -164,7 +164,7 @@ function Tag({ tone, children }: { tone: "accent" | "info" | "muted"; children: 
   const cls = {
     accent: "bg-accent/15 text-accent ring-accent/40",
     info: "bg-info/15 text-info ring-info/40",
-    muted: "bg-ink/5 text-muted ring-ink/15",
+    muted: "bg-white/5 text-muted ring-white/20",
   }[tone];
   return <div className={`rounded-2xl ring-1 px-5 py-4 text-xl sm:text-2xl font-bold text-center ${cls}`}>{children}</div>;
 }

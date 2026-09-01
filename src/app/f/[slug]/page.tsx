@@ -51,11 +51,11 @@ export default async function FarmDashboard({ params }: { params: Promise<{ slug
   const header = (
     <div className="flex flex-col items-center text-center gap-3">
       <Link href="/" className="self-start text-xl text-muted hover:text-ink transition">← Fazendas</Link>
-      <h1 className={`text-4xl sm:text-5xl font-black tracking-tight mt-1 ${restricao ? "text-danger" : ""}`}>{farm.nome}</h1>
+      <h1 className={`text-4xl sm:text-5xl font-black tracking-tight mt-1 ${restricao ? "text-red-300" : ""}`}>{farm.nome}</h1>
       {restricaoAtiva && (
         <div className="rounded-full bg-red-500/15 ring-1 ring-red-400/50 px-6 py-3 shadow-[0_10px_30px_-12px_rgba(239,68,68,0.5)]">
-          <span className="block text-xl sm:text-2xl font-bold text-danger">⚠ Fazenda com restrição</span>
-          <span className="block text-lg sm:text-xl font-semibold text-danger/80">noventena até {restricaoAtiva.ateBR}</span>
+          <span className="block text-xl sm:text-2xl font-bold text-red-300">⚠ Fazenda com restrição</span>
+          <span className="block text-lg sm:text-xl font-semibold text-red-300/80">noventena até {restricaoAtiva.ateBR}</span>
         </div>
       )}
     </div>
@@ -64,7 +64,7 @@ export default async function FarmDashboard({ params }: { params: Promise<{ slug
   const primaryBtn =
     "block text-center px-6 py-6 rounded-[22px] bg-gradient-to-br from-accent to-green-600 text-black text-2xl font-bold shadow-[0_16px_45px_-18px_rgba(34,197,94,0.6)] active:scale-[0.98] transition";
   const secondaryBtn =
-    "block text-center px-6 py-5 rounded-[22px] bg-surface ring-1 ring-ink/10 text-2xl font-bold shadow-sm hover:bg-ink/5 active:scale-[0.98] transition";
+    "block text-center px-6 py-5 rounded-[22px] bg-white/5 ring-1 ring-white/15 text-2xl font-bold backdrop-blur-sm hover:bg-white/10 active:scale-[0.98] transition";
 
   // MODO LISTA: animais individuais (SISBOV + datas)
   if (rows.length > 0) {
@@ -87,8 +87,8 @@ export default async function FarmDashboard({ params }: { params: Promise<{ slug
         {header}
         {lastBatch && <p className="text-center text-xl text-muted">Atualizado em {formatDateBR(new Date(lastBatch.uploadedAt))}</p>}
         <BigCard label="Total na fazenda" value={stats.total} tone={tone} hint="Animais na fazenda hoje" />
-        <BigCard label="Podem sair da fazenda" value={stats.releasedForSale} tone={restricao ? "restricao" : "info"} hint="Mais de 52 dias desde a brincagem" />
-        <BigCard label="Liberados para abate" value={stats.over90Days} tone={restricao ? "restricao" : "accent"} hint="Mais de 90 dias de permanência na fazenda" />
+        <BigCard label="Liberados para venda" value={stats.releasedForSale} tone={restricao ? "restricao" : "accent"} hint="Mais de 52 dias desde a brincagem" />
+        <BigCard label="Mais de 90 dias na fazenda" value={stats.over90Days} tone={restricao ? "restricao" : "info"} hint="Contados do envio do SISBOV" />
         <h2 className="text-2xl font-bold text-muted mt-4 text-center">Por idade</h2>
         <BigCard label="0 a 12 meses" value={stats.byAge["0-12"]} tone={tone} />
         <BigCard label="13 a 24 meses" value={stats.byAge["13-24"]} tone={tone} />
@@ -135,7 +135,7 @@ export default async function FarmDashboard({ params }: { params: Promise<{ slug
   return (
     <div className="flex flex-col gap-6 pb-12">
       {header}
-      <div className="rounded-3xl ring-1 ring-ink/10 bg-surface p-8 text-center flex flex-col gap-4 mt-4 shadow-sm">
+      <div className="rounded-3xl ring-1 ring-white/15 bg-surface p-8 text-center flex flex-col gap-4 mt-4">
         <div className="text-3xl font-bold">Sem dados ainda</div>
         <p className="text-xl text-muted">Esta fazenda ainda não tem saldo informado.</p>
         <Link href={`/painel/${slug}`} className="px-8 py-5 rounded-2xl bg-accent text-black font-bold text-2xl">
