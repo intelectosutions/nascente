@@ -87,7 +87,7 @@ export function PushEnable() {
 
   if (state === "denied") {
     return (
-      <div className="rounded-2xl bg-white/5 ring-1 ring-white/15 px-5 py-4 text-base sm:text-lg text-muted">
+      <div className="rounded-2xl bg-surface ring-1 ring-ink/10 px-5 py-4 text-base sm:text-lg text-muted shadow-sm">
         Avisos bloqueados. Ative as notificações deste app nos Ajustes do celular.
       </div>
     );

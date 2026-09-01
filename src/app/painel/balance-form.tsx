@@ -34,7 +34,7 @@ export function BalanceForm({ slug, initial }: { slug: string; initial: Values }
   }
 
   return (
-    <section className="rounded-2xl bg-surface ring-1 ring-white/15 p-6 flex flex-col gap-5">
+    <section className="rounded-2xl bg-surface ring-1 ring-ink/10 p-6 flex flex-col gap-5 shadow-sm">
       <h2 className="text-2xl font-bold">Saldo do rebanho</h2>
       <p className="text-lg text-muted -mt-3">Quantos animais em cada faixa (copie do seu sistema). M = machos, F = fêmeas.</p>
 
@@ -52,27 +52,27 @@ export function BalanceForm({ slug, initial }: { slug: string; initial: Values }
               value={vals[`m${b.key}`] ? String(vals[`m${b.key}`]) : ""}
               onChange={(e) => set(`m${b.key}`, e.target.value)}
               placeholder="0"
-              className="w-24 sm:w-28 px-3 py-4 rounded-xl bg-bg ring-1 ring-white/20 text-2xl font-mono font-bold text-center outline-none focus:ring-info"
+              className="w-24 sm:w-28 px-3 py-4 rounded-xl bg-bg ring-1 ring-ink/15 text-2xl font-mono font-bold text-center outline-none focus:ring-info"
             />
             <input
               inputMode="numeric"
               value={vals[`f${b.key}`] ? String(vals[`f${b.key}`]) : ""}
               onChange={(e) => set(`f${b.key}`, e.target.value)}
               placeholder="0"
-              className="w-24 sm:w-28 px-3 py-4 rounded-xl bg-bg ring-1 ring-white/20 text-2xl font-mono font-bold text-center outline-none focus:ring-pink-400"
+              className="w-24 sm:w-28 px-3 py-4 rounded-xl bg-bg ring-1 ring-ink/15 text-2xl font-mono font-bold text-center outline-none focus:ring-pink-400"
             />
           </div>
         ))}
       </div>
 
-      <div className="border-t border-white/10 pt-4 flex flex-col gap-1">
+      <div className="border-t border-ink/10 pt-4 flex flex-col gap-1">
         <div className="flex items-center justify-between">
           <span className="text-xl text-muted">Machos</span>
           <span className="text-2xl font-mono font-bold text-info">{totalM}</span>
         </div>
         <div className="flex items-center justify-between">
           <span className="text-xl text-muted">Fêmeas</span>
-          <span className="text-2xl font-mono font-bold text-pink-300">{totalF}</span>
+          <span className="text-2xl font-mono font-bold text-pink-600">{totalF}</span>
         </div>
         <div className="flex items-center justify-between mt-1">
           <span className="text-2xl font-bold">Total</span>
